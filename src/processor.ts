@@ -34,40 +34,41 @@ type Ctx = BatchContext<Store, Item>
 
 
 processor.run(new TypeormDatabase(), async ctx => {
-    let transfersData = getTransfers(ctx)
+    // let transfersData = getTransfers(ctx)
 
-    let accountIds = new Set<string>()
-    for (let t of transfersData) {
-        accountIds.add(t.from)
-        accountIds.add(t.to)
-    }
+    // let accountIds = new Set<string>()
+    // for (let t of transfersData) {
+    //     accountIds.add(t.from)
+    //     accountIds.add(t.to)
+    // }
 
-    let accounts = await ctx.store.findBy(Account, {id: In([...accountIds])}).then(accounts => {
-        return new Map(accounts.map(a => [a.id, a]))
-    })
+    // let accounts = await ctx.store.findBy(Account, {id: In([...accountIds])}).then(accounts => {
+    //     return new Map(accounts.map(a => [a.id, a]))
+    // })
 
-    let transfers: Transfer[] = []
+    // let transfers: Transfer[] = []
 
-    for (let t of transfersData) {
-        let {id, blockNumber, timestamp, extrinsicHash, amount, fee} = t
+    // for (let t of transfersData) {
+    //     let {id, blockNumber, timestamp, extrinsicHash, amount, fee} = t
 
-        let from = getAccount(accounts, t.from)
-        let to = getAccount(accounts, t.to)
+    //     let from = getAccount(accounts, t.from)
+    //     let to = getAccount(accounts, t.to)
 
-        transfers.push(new Transfer({
-            id,
-            blockNumber,
-            timestamp,
-            extrinsicHash,
-            from,
-            to,
-            amount,
-            fee
-        }))
-    }
+    //     transfers.push(new Transfer({
+    //         id,
+    //         blockNumber,
+    //         timestamp,
+    //         extrinsicHash,
+    //         from,
+    //         to,
+    //         amount,
+    //         fee
+    //     }))
+    // }
 
-    await ctx.store.save(Array.from(accounts.values()))
-    await ctx.store.insert(transfers)
+    // await ctx.store.save(Array.from(accounts.values()))
+    // await ctx.store.insert(transfers)
+    ctx.log.info(`MY SECRET IS ${process.env.SUPER_SECRET ?? "NOT FOUND"}`)
 })
 
 
